@@ -14,6 +14,8 @@ import fnmatch
 from os import system
 from PIL import Image
 
+from decouple import config
+
 def return_only_num(lst):
     num = "0123456789"
     s = ""
@@ -66,7 +68,7 @@ def make_image(pic_req):
 
     DATA_DIR.mkdir(exist_ok=True)
 
-    openai.api_key = "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"
+    openai.api_key = config('OPEN_IA_KEY')
 
     try:
         response = openai.Image.create(

@@ -9,6 +9,8 @@ from moviepy.editor import *
 
 import numpy as np 
 
+import time
+
 #lst_l = []
 
 from deep_translator import GoogleTranslator
@@ -47,29 +49,34 @@ def make_video(req):
     parse_text = parse_text.split(".")
 
 
-
-    #for i in range(len(parse_text)):
-    #    print(parse_text[i])
-        #print("===")
-        #make_request_to_ia(parse_text[i])
+    full_word = []
+    for i in range(len(parse_text) - 1):
+        print(parse_text[i].replace("\n\n",""))
+        print("*/*/*/")
+        time.sleep(10)
+        print("mot = r " + make_request_to_ia(parse_text[i]).replace("\n","").replace("\n\n","").replace(".","").replace(",",""))
+        full_word.append(make_request_to_ia(parse_text[i]).replace("\n","").replace("\n\n","").replace(".","").replace(",",""))
     
-    #quit()
-    l = sum_up_story(mytext)
+    #l = sum_up_story(mytext)
 
     
     english_list = []
 
-    for i in range(len(l)):
-        english_list.append(translate_word(l[i]))
+    for i in range(len(full_word)):
+        english_list.append(translate_word(full_word[i]))
     
     
     #print(l)
+
+
+
+    print(full_word)
+    #quit()
 
     print(english_list)
 
     print(len(parse_text))
     print(len(english_list))
-    #quit()
 
     if len(english_list) < 3:
         print("Not enough word program must restart")

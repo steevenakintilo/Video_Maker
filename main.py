@@ -1,18 +1,15 @@
 from speech import *
+import time
 
 def main():
     Always = True
-    while Always == True:
-        try:
-            make_video("Ecrit une histoire sur un sdf qui devient milliardaire")
-            Always = False
-        except:
-            time.sleep(30)
-            print("Sleeping a little")
-            make_video("Ecrit une histoire sur un sdf qui devient milliardaire")
-
+    try:
+        make_video("Ecrit une histoire sur un aveugle qui ecoute de la musique")
+    except:
+        pass
     
 if __name__ == "__main__":
+    time.sleep(1)
     main()
 
 

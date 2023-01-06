@@ -1,5 +1,9 @@
 import openai
 
+import os
+
+from decouple import config
+
 def remove_num(s):
     n = "0123456789"
     ss = ""
@@ -10,7 +14,9 @@ def remove_num(s):
     return(ss)
 
 def make_story(req):
-    openai.api_key = "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"
+
+    
+    openai.api_key = config('OPEN_IA_KEY')
 
     # Set the model and prompt
     model_engine = "text-davinci-003"
@@ -35,7 +41,7 @@ def make_story(req):
 
 
 def sum_up_story_(text):
-    openai.api_key = "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"
+    openai.api_key = config('OPEN_IA_KEY')
     model_engine = "text-davinci-003"
     prompt = "Ecrit le mot le plus important de chaque phrase du texte: " + "\n" + text.replace("\n","").strip()
 
@@ -77,7 +83,7 @@ def sum_up_story_(text):
 
 def make_request_to_ia(req):
     print("")
-    openai.api_key = "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"
+    openai.api_key = config('OPEN_IA_KEY')
 
     # Set the model and prompt
     model_engine = "text-davinci-003"
@@ -100,13 +106,13 @@ def make_request_to_ia(req):
 
     # Print the response
     r = completion.choices[0].text
-    r_ = r.strip().replace("\n","")
-    print("mot = " + r)
+    r_ = r.strip().replace("\n","").replace(".","")
+    #print("mot = " + r)
     return (r)
     
 def sum_up_story(text):
     print("")
-    openai.api_key = "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"
+    openai.api_key = config('OPEN_IA_KEY')
 
     # Set the model and prompt
     model_engine = "text-davinci-003"
