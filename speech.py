@@ -11,8 +11,7 @@ import numpy as np
 
 import time
 
-#lst_l = []
-
+from movie import *
 from deep_translator import GoogleTranslator
 
 def translate_word(word):
@@ -26,73 +25,59 @@ def get_right_pic_in_time(word,lst):
 
     for i in range(len(lst)):
         if word in lst[i]:
-            #print(lst[i])
             print(lst[i])
             return(lst[i])
-            #lst_l.append(lst[i])
 
-def remove_bad_char(lst):
-    l = []
 
 def make_video(req):
-    if os.path.isdir("images"):
-        os.system("rm -r images")
-        print("Remove pic folder")
-    else:
-        print("Nothing to remove")
 
-    mytext = make_story(req)
+    debug_test = False
+    if debug_test == False:
+        if os.path.isdir("images"):
+            os.system("rm -r images")
+            print("Remove pic folder")
+        else:
+            print("Nothing to remove")
 
-    print(mytext)
+        mytext = make_story(req)
 
-    parse_text = mytext.strip()
-    parse_text = parse_text.split(".")
+        #mytext = "Cette vidéo a été réalisée grâce à une intelligence artificielle et du python.En effet le but de mon compte sera de vous raconter des histoire ou autre sous forme de vidéo généré 100% grâce à une intelligence artificielle et du code.Sous chaque vidéo vous aurez juste à proposer une idée de vidéo et je prendrais l’idée la plus liké pour réaliser la vidéo et la poster sur tiktok."
 
+        print(mytext)
+        parse_text = mytext.strip()
+        parse_text = parse_text.split(".")
 
-    full_word = []
-    for i in range(len(parse_text) - 1):
-        print(parse_text[i].replace("\n\n",""))
-        print("*/*/*/")
-        time.sleep(10)
-        print("mot = r " + make_request_to_ia(parse_text[i]).replace("\n","").replace("\n\n","").replace(".","").replace(",",""))
-        full_word.append(make_request_to_ia(parse_text[i]).replace("\n","").replace("\n\n","").replace(".","").replace(",",""))
-    
-    #l = sum_up_story(mytext)
+        print(parse_text)
+        full_word = []
 
-    
-    english_list = []
+        for i in range(len(parse_text) - 1):
+            time.sleep(10)
+            print("Wating 10 secondes")
+            full_word.append(make_request_to_ia(parse_text[i]).replace("\n","").replace("\n\n","").replace(".","").replace(",",""))
+        
+        print(full_word)
+        print(len(full_word))
+        english_list = []
 
-    for i in range(len(full_word)):
-        english_list.append(translate_word(full_word[i]))
-    
-    
-    #print(l)
+        for i in range(len(full_word)):
+            english_list.append(translate_word(full_word[i]))
+        
+        print(english_list)
+        print("Nombre de mot/imagge = " + str(len(english_list)))
+        if len(english_list) < 3:
+            print("Not enough word program must restart")
+            make_video(res)
+        for i in range(len(english_list)):
+            make_image(english_list[i])
 
-
-
-    print(full_word)
-    #quit()
-
-    print(english_list)
-
-    print(len(parse_text))
-    print(len(english_list))
-
-    if len(english_list) < 3:
-        print("Not enough word program must restart")
-        make_video(res)
-    for i in range(len(english_list)):
-        make_image(english_list[i])
-
-    language = 'fr'
-    myobj = gTTS(text=mytext, lang=language, slow=False)
-    myobj.save("story.mp3")
-    
+        language = 'fr'
+        myobj = gTTS(text=mytext, lang=language, slow=False)
+        myobj.save("story.mp3")
+        
     audio = AudioFileClip("story.mp3")
 
     if mytext != "":
         images = print_full_path_file()
-        #images = print_path_pic()
     
     print(images)
 
@@ -100,25 +85,18 @@ def make_video(req):
 
     for i in range(len(english_list)):
         lst_l.append(get_right_pic_in_time(english_list[i],images))
-
-    print(lst_l)
     
     lst_l = [x for x in lst_l if x is not None]
 
-    print(len(lst_l))
     audio_len = audio.duration
+    video_clips = []
+    
+    for i in range(len(parse_text) - 1):
+        video_clips.append(create_sentence_clip(parse_text[i], lst_l[i]))
 
-    print(audio_len)
+    result = concatenate_videoclips(video_clips)
+    result = result.set_audio(audio)
 
-    f_p_s = audio_len/len(lst_l)
+    result.write_videofile("output.mp4",fps = 24)
 
-    print(f_p_s)
-
-    lst_l = [np.array(ImageClip(m).get_frame(0)) for m in lst_l]
-    clip = ImageSequenceClip(lst_l, fps = 1/f_p_s).crossfadein(1)
-
-    final_clip = clip.set_audio(audio)
-
-    final_clip.write_videofile("video.mp4")
-
-    print("Video Done")
+    print("Video done")    
