@@ -1,0 +1,9 @@
+bing_image_downloader==1.1.2
+deep_translator==1.9.2
+gTTS==2.3.0
+moviepy==1.0.3
+numpy==1.22.0
+openai==0.25.0
+Pillow==9.1.0
+python-decouple==3.7
+pyttsx3==2.90
