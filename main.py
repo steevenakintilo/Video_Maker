@@ -6,7 +6,7 @@ def main():
     Always = True
     try:
         #make_video("Ecrit une histoire sur un aveugle qui ecoute de la musique")
-        make_video("Ecrit une histoire sur un sdf qui habite sur la lune")
+        make_video(input("Ask me to write a story about whatever you want: "))
     except:
         print(traceback.format_exc())
         pass
