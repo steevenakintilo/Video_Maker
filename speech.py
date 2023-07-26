@@ -34,7 +34,10 @@ def make_video(req):
     debug_test = False
     if debug_test == False:
         if os.path.isdir("images"):
-            os.system("rm -r images")
+            try:
+                os.system("rm -r images")
+            except:
+                os.system("del -r images")
             print("Remove pic folder")
         else:
             print("Nothing to remove")
